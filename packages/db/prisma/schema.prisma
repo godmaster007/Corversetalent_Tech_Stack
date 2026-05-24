@@ -1,0 +1,165 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Company {
+  id             String    @id @default(uuid())
+  name           String
+  website        String?
+  industry       String?
+  employeeCount  Int?
+  fundingStage   String?
+  linkedinUrl    String?
+  notes          String?
+  status         String    @default("prospect")
+  tags           String[]
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @default(now()) @updatedAt
+
+  contacts       Contact[]
+  deals          Deal[]
+  jobOrders      JobOrder[]
+  activities     Activity[]
+}
+
+model Contact {
+  id              String    @id @default(uuid())
+  companyId       String?
+  firstName       String
+  lastName        String
+  email           String?
+  phone           String?
+  title           String?
+  linkedinUrl     String?
+  linkedinId      String?
+  googleContactId String?
+  source          String?
+  tags            String[]
+  notes           String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @default(now()) @updatedAt
+
+  company         Company?  @relation(fields: [companyId], references: [id])
+  deals           Deal[]
+  activities      Activity[]
+  jobOrders       JobOrder[]
+}
+
+model Deal {
+  id             String    @id @default(uuid())
+  companyId      String?
+  contactId      String?
+  title          String
+  stage          String    @default("prospect")
+  estimatedValue Decimal?  @db.Decimal(12, 2)
+  feePercentage  Decimal?  @db.Decimal(5, 2)
+  notes          String?
+  closedAt       DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @default(now()) @updatedAt
+
+  company        Company?  @relation(fields: [companyId], references: [id])
+  contact        Contact?  @relation(fields: [contactId], references: [id])
+  activities     Activity[]
+}
+
+model JobOrder {
+  id                 String    @id @default(uuid())
+  companyId          String?
+  contactId          String?
+  title              String
+  roleTier           String?
+  baseSalaryMin      Decimal?  @db.Decimal(12, 2)
+  baseSalaryMax      Decimal?  @db.Decimal(12, 2)
+  feePercentage      Decimal?  @db.Decimal(5, 2)
+  exclusivityStart   DateTime?
+  exclusivityDays    Int       @default(14)
+  icpNotes           String?
+  quotaExpectations  String?
+  teamCultureNotes   String?
+  methodologyPref    String[]
+  status             String    @default("active")
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @default(now()) @updatedAt
+
+  company            Company?  @relation(fields: [companyId], references: [id])
+  contact            Contact?  @relation(fields: [contactId], references: [id])
+  applications       Application[]
+}
+
+model Candidate {
+  id                 String    @id @default(uuid())
+  firstName          String
+  lastName           String
+  email              String?
+  phone              String?
+  linkedinUrl        String?
+  linkedinId         String?
+  currentTitle       String?
+  currentCompany     String?
+  yearsExperience    Int?
+  skills             String[]
+  gtmMethodology     String[]
+  quotaAttainment    Json?
+  salaryExpectation  Decimal?  @db.Decimal(12, 2)
+  availability       String?
+  reasonForLooking   String?
+  resumeDriveId      String?
+  source             String?
+  referralSource     String?
+  vettingStage1      Boolean   @default(false)
+  vettingStage2      Boolean   @default(false)
+  overallScore       Decimal?  @db.Decimal(5, 2)
+  tags               String[]
+  notes              String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @default(now()) @updatedAt
+
+  applications       Application[]
+}
+
+model Application {
+  id                 String    @id @default(uuid())
+  candidateId        String
+  jobOrderId         String
+  stage              String    @default("sourced")
+  submittedAt        DateTime?
+  interviewDate      DateTime?
+  offerDate          DateTime?
+  placedDate         DateTime?
+  guaranteeEndDate   DateTime?
+  feeAmount          Decimal?  @db.Decimal(12, 2)
+  invoiceStatus      String?
+  notes              String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @default(now()) @updatedAt
+
+  candidate          Candidate @relation(fields: [candidateId], references: [id])
+  jobOrder           JobOrder  @relation(fields: [jobOrderId], references: [id])
+
+  @@unique([candidateId, jobOrderId])
+}
+
+model Activity {
+  id                 String    @id @default(uuid())
+  contactId          String?
+  companyId          String?
+  dealId             String?
+  type               String
+  subject            String?
+  body               String?
+  direction          String?
+  channel            String?
+  occurredAt         DateTime  @default(now())
+  createdAt          DateTime  @default(now())
+
+  contact            Contact?  @relation(fields: [contactId], references: [id])
+  company            Company?  @relation(fields: [companyId], references: [id])
+  deal               Deal?     @relation(fields: [dealId], references: [id])
+}
