@@ -1,10 +1,11 @@
 import { serve } from "inngest/next";
 import { inngest } from "../../../inngest/client";
+import { sendScheduledEmail } from "../../../inngest/functions";
 
-// Inngest functions will go here
-const functions: any[] = [];
+// Register all Inngest background functions here
+const functions = [sendScheduledEmail];
 
-// Create an API that serves zero functions
+// Create an API that serves the functions
 export const { GET, POST, PUT } = serve({
   client: inngest,
   functions,
