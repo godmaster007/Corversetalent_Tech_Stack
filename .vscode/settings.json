@@ -47,6 +47,7 @@
   ],
   "prisma.decorations.enable": true,
   "chat.tools.terminal.autoApprove": {
-    "npm install": true
+    "npm install": true,
+    "npx prisma": true
   }
 }

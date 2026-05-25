@@ -20,10 +20,10 @@ export default async function CampaignsPage() {
           <h2 className="text-2xl font-bold text-white mb-2">Campaign Management</h2>
           <p className="text-gray-400">Launch and monitor multi-channel outreach campaigns.</p>
         </div>
-        <button className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-medium transition-colors flex items-center gap-2">
+        <Link href="/outreach/campaigns/new" className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-medium transition-colors flex items-center gap-2">
           <Plus className="w-5 h-5" />
           New Campaign
-        </button>
+        </Link>
       </div>
 
       {/* Aggregate Metrics */}

@@ -85,3 +85,49 @@ async function syncToCRM(profileData: any) {
     throw error;
   }
 }
+
+// -------- OUTREACH EXECUTION WORKER --------
+// This acts as our "Inngest" background runner but strictly for browser-side LinkedIn tasks.
+
+const POLL_INTERVAL_MS = 30000; // Poll every 30 seconds for MVP demo purposes
+
+async function pollForTasks() {
+  try {
+    const res = await fetch(`${API_BASE_URL}/extension/tasks`);
+    if (!res.ok) return;
+    
+    const data = await res.json();
+    
+    if (data.success && data.tasks.length > 0) {
+      console.log(`[Outreach Worker] Found ${data.tasks.length} pending LinkedIn tasks!`);
+      
+      for (const task of data.tasks) {
+        console.log(`[Outreach Worker] Executing task: ${task.currentStep.type} for ${task.contact?.firstName || 'Prospect'}`);
+        
+        // Simulating the LinkedIn Automation:
+        // In a full production app, this would use chrome.tabs.create to open the profile,
+        // inject a content script to click 'Connect' or 'Message', and wait for success.
+        
+        // Simulate waiting for action to complete (e.g. 5 seconds)
+        await new Promise(resolve => setTimeout(resolve, 5000));
+        
+        // Complete the task and advance the sequence in the database
+        await fetch(`${API_BASE_URL}/extension/tasks/complete`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ campaignMemberId: task.id })
+        });
+        
+        console.log(`[Outreach Worker] Task ${task.id} completed. Sequence advanced.`);
+      }
+    }
+  } catch (error) {
+    console.error("[Outreach Worker] Polling failed:", error);
+  } finally {
+    // Schedule next poll
+    setTimeout(pollForTasks, POLL_INTERVAL_MS);
+  }
+}
+
+// Start polling immediately when extension loads
+pollForTasks();
