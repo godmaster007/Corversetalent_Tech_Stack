@@ -39,11 +39,11 @@ export default function DashboardLayout({
         
         <nav style={{ padding: '1.5rem 1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', flex: 1 }}>
           <SidebarLink href="/dashboard" icon={<LayoutDashboard size={20} />} label="Overview" />
-          <SidebarLink href="/dashboard/crm" icon={<Users size={20} />} label="CRM" />
-          <SidebarLink href="/dashboard/ats" icon={<Briefcase size={20} />} label="ATS" />
-          <SidebarLink href="/dashboard/linkedin" icon={<Share2 size={20} />} label="LinkedIn Auto" />
-          <SidebarLink href="/dashboard/outreach" icon={<Mail size={20} />} label="Outreach" />
-          <SidebarLink href="/dashboard/analytics" icon={<BarChart3 size={20} />} label="Analytics" />
+          <SidebarLink href="/crm" icon={<Users size={20} />} label="CRM" />
+          <SidebarLink href="/ats" icon={<Briefcase size={20} />} label="ATS" />
+          <SidebarLink href="/linkedin" icon={<Share2 size={20} />} label="LinkedIn Auto" />
+          <SidebarLink href="/outreach" icon={<Mail size={20} />} label="Outreach" />
+          <SidebarLink href="/analytics" icon={<BarChart3 size={20} />} label="Analytics" />
         </nav>
         
         <div style={{ padding: '1rem', borderTop: '1px solid var(--border)' }}>
