@@ -8,9 +8,17 @@ export default async function NewCampaignPage() {
   });
 
   const contacts = await prisma.contact.findMany({
-    select: { id: true, firstName: true, lastName: true, company: true, title: true },
+    select: { id: true, firstName: true, lastName: true, company: { select: { name: true } }, title: true },
     orderBy: { createdAt: "desc" }
   });
 
-  return <NewCampaignClient sequences={sequences} contacts={contacts} />;
+  const formattedContacts = contacts.map(c => ({
+    id: c.id,
+    firstName: c.firstName,
+    lastName: c.lastName,
+    title: c.title,
+    company: c.company?.name || null
+  }));
+
+  return <NewCampaignClient sequences={sequences} contacts={formattedContacts} />;
 }

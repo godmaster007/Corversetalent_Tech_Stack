@@ -5,7 +5,7 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL", "")
+  directUrl = env("DIRECT_URL")
 }
 
 model Company {
@@ -260,5 +260,4 @@ model CampaignMember {
 
   @@unique([campaignId, contactId])
   @@unique([campaignId, candidateId])
-  @@check("(\"contactId\" IS NOT NULL AND \"candidateId\" IS NULL) OR (\"candidateId\" IS NOT NULL AND \"contactId\" IS NULL)")
 }
