@@ -56,7 +56,7 @@ export default async function CandidatesPage() {
               </tr>
             </thead>
             <tbody>
-              {candidates.map(candidate => (
+              {candidates.map((candidate: any) => (
                 <tr key={candidate.id} style={{ borderBottom: '1px solid var(--border)' }}>
                   <td style={{ padding: '1rem' }}>
                     <Link href={`/dashboard/ats/candidates/${candidate.id}`} style={{ fontWeight: 500, color: 'var(--primary)' }}>
