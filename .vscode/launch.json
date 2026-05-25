@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Next.js Web Dev",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/apps/web/node_modules/.bin/next",
+      "args": ["dev"],
+      "cwd": "${workspaceFolder}/apps/web",
+      "skipFiles": ["<node_internals>/**"],
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Chrome Extension (Popup)",
+      "type": "chrome",
+      "request": "attach",
+      "port": 9222,
+      "pathMapping": {
+        "/": "${workspaceFolder}/apps/chrome-extension/",
+        "/src": "${workspaceFolder}/apps/chrome-extension/src"
+      }
+    }
+  ]
+}

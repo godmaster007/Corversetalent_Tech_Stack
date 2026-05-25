@@ -4,10 +4,13 @@ import { prisma } from "@corversetalent/db";
 export async function POST(req: Request) {
   try {
     const data = await req.json();
-    
+
     // Validate data
     if (!data.name && !data.linkedinUrl) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        { status: 400 },
+      );
     }
 
     // Attempt to split name simply
@@ -25,13 +28,13 @@ export async function POST(req: Request) {
     }
 
     // Upsert Candidate (update if exists by linkedinId, otherwise create)
-    // We don't have a unique constraint on linkedinId in the schema yet, 
+    // We don't have a unique constraint on linkedinId in the schema yet,
     // so we'll do a simple findFirst then create/update.
-    
+
     let candidate = null;
     if (linkedinId) {
       candidate = await prisma.candidate.findFirst({
-        where: { linkedinId }
+        where: { linkedinId },
       });
     }
 
@@ -40,9 +43,9 @@ export async function POST(req: Request) {
         where: { id: candidate.id },
         data: {
           currentTitle: data.title || candidate.currentTitle,
-          location: data.location || (candidate as any).location, // fallback
+          location: data.location || candidate.location,
           updatedAt: new Date(),
-        }
+        },
       });
     } else {
       candidate = await prisma.candidate.create({
@@ -52,17 +55,19 @@ export async function POST(req: Request) {
           currentTitle: data.title || null,
           linkedinUrl: data.linkedinUrl || null,
           linkedinId: linkedinId || null,
+          location: data.location || null,
           source: "LinkedIn Extension",
           tags: ["Scraped"],
-          // Add location to notes if schema doesn't have location field
-          notes: data.location ? `Location: ${data.location}` : null
-        }
+        },
       });
     }
 
     return NextResponse.json({ success: true, candidate }, { status: 200 });
   } catch (error: any) {
     console.error("Failed to sync LinkedIn profile:", error);
-    return NextResponse.json({ error: error.message || "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { error: error.message || "Internal Server Error" },
+      { status: 500 },
+    );
   }
 }

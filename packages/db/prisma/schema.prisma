@@ -104,6 +104,7 @@ model Candidate {
   linkedinId         String?
   currentTitle       String?
   currentCompany     String?
+  location           String?
   yearsExperience    Int?
   skills             String[]
   gtmMethodology     String[]
@@ -186,3 +187,15 @@ model TrackingEvent {
   contact         Contact?  @relation(fields: [contactId], references: [id])
 }
 
+model Post {
+  id           String    @id @default(uuid())
+  content      String    @db.Text
+  topic        String?
+  format       String?
+  tone         String?
+  status       String    @default("draft") // draft, scheduled, published
+  scheduledFor DateTime?
+  publishedAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @default(now()) @updatedAt
+}

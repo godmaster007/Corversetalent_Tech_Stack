@@ -1,0 +1,107 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Install Dependencies",
+      "type": "shell",
+      "command": "npm",
+      "args": ["install"],
+      "problemMatcher": ["$npm"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "runOptions": {
+        "runOn": "folderOpen"
+      }
+    },
+    {
+      "label": "Dev (All)",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "dev"],
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^.*$",
+          "line": 0
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^.*dev.*",
+          "endsPattern": "^.*ready started server.*|^.*compiled.*"
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "Web Dev",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "dev", "--workspace=apps/web"],
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    },
+    {
+      "label": "Build All",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "build"],
+      "problemMatcher": ["$tsc"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "Lint All",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "lint"],
+      "problemMatcher": ["$eslint-stylish"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "DB Generate",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "db:generate"],
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "DB Push",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "db:push"],
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "DB Studio",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "db:studio"],
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    }
+  ]
+}

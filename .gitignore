@@ -27,8 +27,10 @@ yarn-debug.log*
 yarn-error.log*
 
 # IDE
-.vscode/
 .idea/
+.vscode/settings.local.json
+.vscode/launch.local.json
+# Keep .vscode/ for shared team configuration
 
 # OS
 .DS_Store
