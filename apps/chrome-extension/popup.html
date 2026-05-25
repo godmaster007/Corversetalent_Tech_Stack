@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Corversetalent Automation</title>
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      width: 320px;
+      padding: 16px;
+      background-color: #09090b;
+      color: #fafafa;
+      margin: 0;
+    }
+    h2 {
+      font-size: 1.25rem;
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-family: 'Outfit', sans-serif;
+    }
+    .text-primary { color: #3b82f6; }
+    
+    .card {
+      background-color: #18181b;
+      border: 1px solid #27272a;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 16px;
+    }
+    
+    .stats-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 0.875rem;
+    }
+    .stats-label { color: #a1a1aa; }
+    
+    button {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    
+    .btn-primary {
+      background-color: #3b82f6;
+      color: white;
+    }
+    .btn-primary:hover { background-color: #2563eb; }
+    
+    .btn-danger {
+      background-color: #ef4444;
+      color: white;
+    }
+    .btn-danger:hover { background-color: #dc2626; }
+    
+    .hidden { display: none; }
+    .status-indicator {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 6px;
+    }
+    .status-active { background-color: #22c55e; }
+    .status-inactive { background-color: #ef4444; }
+  </style>
+</head>
+<body>
+  <h2>Corverse<span class="text-primary">talent</span></h2>
+  
+  <div class="card">
+    <div style="display: flex; align-items: center; margin-bottom: 12px; font-size: 0.875rem;">
+      <span id="status-dot" class="status-indicator status-inactive"></span>
+      <span id="status-text">Automation Paused</span>
+    </div>
+    
+    <button id="btn-start" class="btn-primary">Start Campaign</button>
+    <button id="btn-stop" class="btn-danger hidden">Stop Automation</button>
+  </div>
+  
+  <div class="card">
+    <h3 style="font-size: 0.875rem; margin-top: 0; margin-bottom: 12px; color: #e4e4e7;">Daily Stats</h3>
+    <div class="stats-row">
+      <span class="stats-label">Connections Sent</span>
+      <span id="stat-connections">0 / 25</span>
+    </div>
+    <div class="stats-row">
+      <span class="stats-label">Profiles Viewed</span>
+      <span id="stat-views">0</span>
+    </div>
+    <div class="stats-row">
+      <span class="stats-label">Messages Sent</span>
+      <span id="stat-messages">0</span>
+    </div>
+  </div>
+
+  <div style="text-align: center; font-size: 0.75rem; color: #a1a1aa; margin-top: 16px;">
+    Syncing to Corversetalent CRM
+  </div>
+
+  <script type="module" src="dist/popup.js"></script>
+</body>
+</html>

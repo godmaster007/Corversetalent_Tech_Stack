@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "Corversetalent LinkedIn Automation",
+  "version": "1.0.0",
+  "description": "Safe, browser-based LinkedIn automation and data scraping for Corversetalent CRM.",
+  "permissions": [
+    "storage",
+    "alarms",
+    "tabs",
+    "scripting"
+  ],
+  "host_permissions": [
+    "*://*.linkedin.com/*",
+    "http://localhost:3000/*"
+  ],
+  "background": {
+    "service_worker": "dist/background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.linkedin.com/*"],
+      "js": ["dist/content.js"]
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Corversetalent Automation"
+  }
+}
