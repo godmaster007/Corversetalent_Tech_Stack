@@ -7,7 +7,7 @@ console.log("Corversetalent Automation: Background Service Worker initialized.")
 let isRunning = false;
 let dailyConnections = 0;
 const MAX_DAILY_CONNECTIONS = 25; // Safety limit
-const API_BASE_URL = "http://localhost:3000/api";
+const API_BASE_URL = "https://corversetalent-tech-stack.vercel.app/api";
 
 chrome.runtime.onInstalled.addListener(() => {
   console.log("Extension installed and ready.");
