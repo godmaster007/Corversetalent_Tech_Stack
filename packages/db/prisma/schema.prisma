@@ -50,6 +50,7 @@ model Contact {
   activities      Activity[]
   jobOrders       JobOrder[]
   trackingEvents  TrackingEvent[]
+  campaignMembers CampaignMember[]
 }
 
 model Deal {
@@ -124,6 +125,7 @@ model Candidate {
   updatedAt          DateTime  @default(now()) @updatedAt
 
   applications       Application[]
+  campaignMembers    CampaignMember[]
 }
 
 model Application {
@@ -198,4 +200,64 @@ model Post {
   publishedAt  DateTime?
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @default(now()) @updatedAt
+}
+
+model Sequence {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  steps       SequenceStep[]
+  campaigns   Campaign[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+}
+
+model SequenceStep {
+  id          String   @id @default(uuid())
+  sequenceId  String
+  type        String   // "email", "linkedin_view", "linkedin_connect", "linkedin_message"
+  orderIndex  Int
+  delayDays   Int      @default(1)
+  content     String?  @db.Text // Email or message template
+  subject     String?  // For emails
+  variants    Json?    // For A/B testing
+  condition   String?  // Branching conditions
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+
+  sequence    Sequence @relation(fields: [sequenceId], references: [id])
+  campaignMembers CampaignMember[]
+}
+
+model Campaign {
+  id          String   @id @default(uuid())
+  name        String
+  sequenceId  String
+  status      String   @default("draft") // "draft", "active", "paused", "completed"
+  metrics     Json?    
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+
+  sequence    Sequence @relation(fields: [sequenceId], references: [id])
+  members     CampaignMember[]
+}
+
+model CampaignMember {
+  id              String   @id @default(uuid())
+  campaignId      String
+  contactId       String?
+  candidateId     String?
+  currentStepId   String?
+  status          String   @default("active") // "active", "paused", "replied", "completed", "bounced"
+  nextExecutionAt DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @default(now()) @updatedAt
+
+  campaign        Campaign @relation(fields: [campaignId], references: [id])
+  contact         Contact? @relation(fields: [contactId], references: [id])
+  candidate       Candidate? @relation(fields: [candidateId], references: [id])
+  currentStep     SequenceStep? @relation(fields: [currentStepId], references: [id])
+
+  @@unique([campaignId, contactId])
+  @@unique([campaignId, candidateId])
 }

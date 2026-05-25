@@ -7,10 +7,13 @@ import { prisma } from "@corversetalent/db";
  * This function can be delayed and queued by the sequence builder.
  */
 export const sendScheduledEmail = inngest.createFunction(
-  { id: "send-scheduled-email", name: "Send Scheduled Email" },
-  { event: "outreach/email.send" },
-  async ({ event, step }) => {
-    const { contactId, subjectTemplate, bodyTemplate, variables, delayDays } = event.data;
+  {
+    id: "send-scheduled-email",
+    name: "Send Scheduled Email",
+  },
+  async ({ event, step }: { event: any; step: any }) => {
+    const { contactId, subjectTemplate, bodyTemplate, variables, delayDays } =
+      event.data;
 
     // Optional delay for drip campaigns
     if (delayDays && delayDays > 0) {
@@ -66,5 +69,5 @@ export const sendScheduledEmail = inngest.createFunction(
     });
 
     return { success: true, messageId: result.id };
-  }
+  },
 );
