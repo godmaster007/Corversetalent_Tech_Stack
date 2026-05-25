@@ -45,7 +45,7 @@ model Contact {
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @default(now()) @updatedAt
 
-  company         Company?  @relation(fields: [companyId], references: [id])
+  company         Company?  @relation(fields: [companyId], references: [id], onDelete: SetNull)
   deals           Deal[]
   activities      Activity[]
   jobOrders       JobOrder[]
@@ -66,8 +66,8 @@ model Deal {
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @default(now()) @updatedAt
 
-  company        Company?  @relation(fields: [companyId], references: [id])
-  contact        Contact?  @relation(fields: [contactId], references: [id])
+  company        Company?  @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  contact        Contact?  @relation(fields: [contactId], references: [id], onDelete: SetNull)
   activities     Activity[]
 }
 
@@ -90,8 +90,8 @@ model JobOrder {
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @default(now()) @updatedAt
 
-  company            Company?  @relation(fields: [companyId], references: [id])
-  contact            Contact?  @relation(fields: [contactId], references: [id])
+  company            Company?  @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  contact            Contact?  @relation(fields: [contactId], references: [id], onDelete: SetNull)
   applications       Application[]
 }
 
@@ -144,8 +144,8 @@ model Application {
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @default(now()) @updatedAt
 
-  candidate          Candidate @relation(fields: [candidateId], references: [id])
-  jobOrder           JobOrder  @relation(fields: [jobOrderId], references: [id])
+  candidate          Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  jobOrder           JobOrder  @relation(fields: [jobOrderId], references: [id], onDelete: Cascade)
 
   @@unique([candidateId, jobOrderId])
 }
@@ -163,9 +163,9 @@ model Activity {
   occurredAt         DateTime  @default(now())
   createdAt          DateTime  @default(now())
 
-  contact            Contact?  @relation(fields: [contactId], references: [id])
-  company            Company?  @relation(fields: [companyId], references: [id])
-  deal               Deal?     @relation(fields: [dealId], references: [id])
+  contact            Contact?  @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  company            Company?  @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  deal               Deal?     @relation(fields: [dealId], references: [id], onDelete: SetNull)
   trackingEvents     TrackingEvent[]
 }
 
@@ -185,8 +185,8 @@ model TrackingEvent {
   geoCountry      String?
   occurredAt      DateTime  @default(now())
 
-  activity        Activity? @relation(fields: [activityId], references: [id])
-  contact         Contact?  @relation(fields: [contactId], references: [id])
+  activity        Activity? @relation(fields: [activityId], references: [id], onDelete: SetNull)
+  contact         Contact?  @relation(fields: [contactId], references: [id], onDelete: SetNull)
 }
 
 model Post {
@@ -225,7 +225,7 @@ model SequenceStep {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
 
-  sequence    Sequence @relation(fields: [sequenceId], references: [id])
+  sequence    Sequence @relation(fields: [sequenceId], references: [id], onDelete: Cascade)
   campaignMembers CampaignMember[]
 }
 
@@ -238,7 +238,7 @@ model Campaign {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
 
-  sequence    Sequence @relation(fields: [sequenceId], references: [id])
+  sequence    Sequence @relation(fields: [sequenceId], references: [id], onDelete: Cascade)
   members     CampaignMember[]
 }
 
@@ -253,11 +253,12 @@ model CampaignMember {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @default(now()) @updatedAt
 
-  campaign        Campaign @relation(fields: [campaignId], references: [id])
-  contact         Contact? @relation(fields: [contactId], references: [id])
-  candidate       Candidate? @relation(fields: [candidateId], references: [id])
-  currentStep     SequenceStep? @relation(fields: [currentStepId], references: [id])
+  campaign        Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  contact         Contact? @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  candidate       Candidate? @relation(fields: [candidateId], references: [id], onDelete: SetNull)
+  currentStep     SequenceStep? @relation(fields: [currentStepId], references: [id], onDelete: SetNull)
 
   @@unique([campaignId, contactId])
   @@unique([campaignId, candidateId])
+  @@check("(\"contactId\" IS NOT NULL AND \"candidateId\" IS NULL) OR (\"candidateId\" IS NOT NULL AND \"contactId\" IS NULL)")
 }
