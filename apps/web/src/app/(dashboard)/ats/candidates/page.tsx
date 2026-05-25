@@ -69,7 +69,7 @@ export default async function CandidatesPage() {
                   </td>
                   <td style={{ padding: '1rem' }}>
                     <div style={{ display: 'flex', gap: '0.25rem', flexWrap: 'wrap' }}>
-                      {candidate.gtmMethodology.length > 0 ? candidate.gtmMethodology.map(m => (
+                      {candidate.gtmMethodology.length > 0 ? candidate.gtmMethodology.map((m: string) => (
                         <span key={m} style={{ backgroundColor: 'var(--secondary)', padding: '0.1rem 0.4rem', borderRadius: '0.25rem', fontSize: '0.75rem' }}>
                           {m}
                         </span>
