@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { Building2, Users, KanbanSquare } from "lucide-react";
 

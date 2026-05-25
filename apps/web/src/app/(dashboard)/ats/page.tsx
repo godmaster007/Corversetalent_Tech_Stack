@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { Briefcase, UserCheck, KanbanSquare } from "lucide-react";
 
