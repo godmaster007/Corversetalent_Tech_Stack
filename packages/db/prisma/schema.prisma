@@ -49,6 +49,7 @@ model Contact {
   deals           Deal[]
   activities      Activity[]
   jobOrders       JobOrder[]
+  trackingEvents  TrackingEvent[]
 }
 
 model Deal {
@@ -162,4 +163,26 @@ model Activity {
   contact            Contact?  @relation(fields: [contactId], references: [id])
   company            Company?  @relation(fields: [companyId], references: [id])
   deal               Deal?     @relation(fields: [dealId], references: [id])
+  trackingEvents     TrackingEvent[]
 }
+
+model TrackingEvent {
+  id              String    @id @default(uuid())
+  activityId      String?
+  contactId       String?
+  eventType       String    // "open" or "click"
+  linkUrl         String?   // Destination URL if click
+  ipAddress       String?
+  userAgent       String?
+  deviceType      String?   // "mobile", "desktop", "tablet"
+  browser         String?
+  os              String?
+  geoCity         String?
+  geoRegion       String?
+  geoCountry      String?
+  occurredAt      DateTime  @default(now())
+
+  activity        Activity? @relation(fields: [activityId], references: [id])
+  contact         Contact?  @relation(fields: [contactId], references: [id])
+}
+

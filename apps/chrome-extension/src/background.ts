@@ -72,8 +72,14 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 async function syncToCRM(profileData: any) {
   try {
     console.log("Syncing to CRM...", profileData);
-    // Real implementation would POST to Next.js /api/linkedin/sync route
-    return { synced: true };
+    const response = await fetch(`${API_BASE_URL}/linkedin/sync`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(profileData)
+    });
+    const result = await response.json();
+    console.log("Successfully synced to CRM:", result);
+    return result;
   } catch (error) {
     console.error("Failed to sync to CRM", error);
     throw error;
