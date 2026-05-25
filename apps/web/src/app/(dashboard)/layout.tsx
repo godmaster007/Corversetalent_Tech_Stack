@@ -7,7 +7,8 @@ import {
   Mail, 
   Share2, 
   BarChart3, 
-  Settings 
+  Settings,
+  Sparkles
 } from "lucide-react";
 
 export default function DashboardLayout({
@@ -41,6 +42,7 @@ export default function DashboardLayout({
           <SidebarLink href="/dashboard" icon={<LayoutDashboard size={20} />} label="Overview" />
           <SidebarLink href="/crm" icon={<Users size={20} />} label="CRM" />
           <SidebarLink href="/ats" icon={<Briefcase size={20} />} label="ATS" />
+          <SidebarLink href="/content/generator" icon={<Sparkles size={20} />} label="Content Engine" />
           <SidebarLink href="/linkedin" icon={<Share2 size={20} />} label="LinkedIn Auto" />
           <SidebarLink href="/outreach" icon={<Mail size={20} />} label="Outreach" />
           <SidebarLink href="/analytics" icon={<BarChart3 size={20} />} label="Analytics" />
